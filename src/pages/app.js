@@ -1,10 +1,11 @@
 import React from 'react';
+import Dropdown from '../ui-components/dropdown/dropdown';
 
 const App = () => {
   return (
     <div className="container">
       <div className="panel panel-rounded--top panel-shadow">
-      <h1>Hello</h1>
+      <Dropdown title="Title goes here" description="description goes here"/>
       </div>
   </div>
   )

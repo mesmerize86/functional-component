@@ -18,6 +18,7 @@ module.exports = {
   "rules": {
     // {{ Possible Errors, Style
     // The following rules point out areas where you might have made mistakes.
+    "semi":true,
     "comma-dangle": 2, // disallow or enforce trailing commas
     "no-cond-assign": 2, // disallow assignment in conditional expressions
     "no-control-regex": 2, // disallow control characters in regular expressions
