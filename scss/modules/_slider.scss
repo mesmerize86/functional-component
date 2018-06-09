@@ -5,7 +5,6 @@
   &-container{
     position: relative;
     width: 100%;
-    display: none;
     padding: 15px;
 
     &:after{
@@ -87,7 +86,7 @@
     &:active, &:focus, &:visited {
       outline: none;
     }
-    @include breakpoint("xxlarge-up"){ 
+    @include breakpoint("xxlarge-up"){
       & {display: none;}
     }
     @include breakpoint("small-below"){
