@@ -31,7 +31,7 @@ const slideshow = ({ contents, currentSlide, handlePrevButton, handleNextButton 
 const slideshowContainer = (contents, currentSlide) => {
   return (
     contents.map((content, index) => {
-      return <SlideshowContentContainer slide = { currentSlide === index } key = { index } title={ content.title } description={ content.description } imgSrc={ content.thumbnail } />
+      return <SlideshowContentContainer slide = { currentSlide === index } key = { index } title={ content.title } description={ content.description } thumbnail={ content.thumbnail } />
     })
   )
 }
