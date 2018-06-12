@@ -1,26 +1,50 @@
 import React from 'react';
 import Parser from 'html-react-parser';
-import { defaultPath, imageNotFound } from '../../shared-components/images/image-source';
+import classnames from 'classnames';
+import { withState, withHandlers, compose } from 'recompose';
 
-const slideshow = ({ title, description, imgSrc }) => {
+//partial components
+import SlideshowContentContainer from './slideshow-content-container';
+
+const slideshow = ({ contents, currentSlide, handlePrevButton, handleNextButton }) => {
   return (
     <div className="slider">
-      <div className="slider-container">
-        <div className="slider-thumbnail">
-          <img onError={imageError} src={`${defaultPath}${imgSrc}`} alt={title} className="img-responsive"/>
-          </div>
-        <div className="slider-content">
-          <p className="slider-title">{title}</p>
-          <p className="slider-description" >{Parser(description)}</p>
-        </div>
+      { slideshowContainer(contents, currentSlide) }
+      <div className="slider-control">
+        <ul className="slider-control-wrapper">
+          <li className="slider-control--left">
+            <a href="#" onClick={handlePrevButton} className="slider-control-link">
+              <span className="icon icon-caret-left"></span> <span className="control-text control-text--prev">Prev</span>
+            </a>
+          </li>
+          <li className="slider-control--right">
+            <a href="#" onClick={handleNextButton} className="slider-control-link">
+              <span className="control-text control-text--next">Next</span> <span className="icon icon-caret-right"></span>
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   )
 }
 
-const imageError = (e) =>{
-  (e)=>{e.target.src= `${imageNotFound.imagePath} ${imageNotFound.imageName}` }
-
+const slideshowContainer = (contents, currentSlide) => {
+  return (
+    contents.map((content, index) => {
+      return <SlideshowContentContainer slide = { currentSlide === index } key = { index } title={ content.title } description={ content.description } imgSrc={ content.thumbnail } />
+    })
+  )
 }
 
-export default slideshow;
+const enhanceSlideshow = compose (
+  withState('currentSlide', 'setCurrentSlide', 0),
+  withHandlers({
+    handlePrevButton : ({ setCurrentSlide, length }) => e => {
+      setCurrentSlide(currentSlide => currentSlide === 0 ? length - 1 : currentSlide - 1)
+    },
+    handleNextButton : ({ setCurrentSlide, length }) => e => {
+      setCurrentSlide(currentSlide => currentSlide < length - 1 ? currentSlide + 1 : 0)
+    }
+  })
+)
+export default enhanceSlideshow(slideshow);

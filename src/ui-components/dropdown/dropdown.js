@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 //child component
 import SlideShow from '../slideshow/slideshow';
 
-const dropdown = ({open, title, description, handleClick, contents }) => {
+const dropdown = ({isExpand, title, handleClick, contents }) => {
   if(title){
     return (
       <div className="dropdown">
@@ -14,14 +14,13 @@ const dropdown = ({open, title, description, handleClick, contents }) => {
           <p className="dropdown-title">
             <span className="icon-file"></span> {title}
             <a href="#" onClick={handleClick}>
-              <span className="icon-caret-down"></span>
+              <span className={isExpand ? "icon-caret-down" : "icon-caret-up"}></span>
             </a>
           </p>
-      </div>
-      <div className="dropdown-content">
-      { /* content place holder for child component */}
-      { slideshow(contents) }
-      </div>
+        </div>
+        <div className="dropdown-content">
+          {isExpand ? <SlideShow contents={contents} length={contents.length}/> : null }
+        </div>
       </div>
     )
   };
@@ -29,20 +28,11 @@ const dropdown = ({open, title, description, handleClick, contents }) => {
   return null;
 };
 
-const slideshow = (contents) => {
-  return(
-    contents.map((content, index) => {
-      return <SlideShow key={index} title={content.title} description={content.description} imgSrc={content.thumbnail} />
-    })
-  )
-}
-
 const mapStateToProps = (state) => {
   return {
     contents : state.contents
   }
 }
-
 
 const enhance = compose(
   connect(mapStateToProps, {requestApiAction}),
@@ -51,15 +41,15 @@ const enhance = compose(
       this.props.requestApiAction();
     }
   }),
-  withState('open', 'setOpen', true),
-  withPropsOnChange(['contents'], ({contents}) => {
+  withState('isExpand', 'setExpand', true),
+  withPropsOnChange(['contents'], ({ contents }) => {
     return {
       title: contents.title,
-      contents: contents.content
+      contents: contents.content,
     }
   }),
   withHandlers({
-    handleClick: props => events => props.setOpen(!props.open)
+    handleClick: props => events => props.setExpand(!props.isExpand)
   })
 )
 
