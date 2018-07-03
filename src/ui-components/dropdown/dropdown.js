@@ -10,7 +10,7 @@ const dropdown = ({isExpand, title, handleClick, contents }) => {
   if(title){
     return (
       <div className="dropdown">
-        <div className="dropdown-bar dropdown-bar-rounded--top">
+        <div className="dropdown-bar">
           <p className="dropdown-title">
             <span className="icon-file"></span> {title}
             <a href="#" onClick={handleClick}>
